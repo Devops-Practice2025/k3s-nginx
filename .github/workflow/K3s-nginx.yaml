@@ -1,0 +1,14 @@
+name: K3s-nginx Deployment
+trigger: 
+  branches:
+    - main
+env:
+  name: dev
+  
+jobs:
+
+  deployment:
+    runs_on: ubuntu-latest
+    steps:
+      - name: Code Chekout
+        uses: actions/checkout@v4

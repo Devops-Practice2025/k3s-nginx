@@ -1,0 +1,4 @@
+---
+name: Install k3s in linux
+hosts: all
+become: yes
