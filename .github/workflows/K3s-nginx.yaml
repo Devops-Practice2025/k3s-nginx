@@ -1,6 +1,8 @@
 name: K3s-nginx Deployment
 on: 
-  workflow_dispatch
+  push:
+    branches: [main]
+
 
 env:
   AZURE_VM_IP: ${{ secrets.AZURE_VM_IP }}
