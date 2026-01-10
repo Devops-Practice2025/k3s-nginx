@@ -1,2 +1,2 @@
-[hosts]
+[azurevm]
 74.235.244.172 ansible_user=azureuser
