@@ -6,11 +6,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx-hello
+      app: hello-nginx
   template:
     metadata:
       labels:
-        app: nginx-hello
+        app: hello-nginx
     spec:
       containers:
       - name: nginx
@@ -24,7 +24,7 @@ metadata:
   name: hello-nginx
 spec:
   selector:
-    app: nginx-hello
+    app: hello-nginx
   ports:
   - port: 80
     targetPort: 80
