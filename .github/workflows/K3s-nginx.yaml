@@ -49,6 +49,6 @@ jobs:
           --insecure-skip-tls-verify --validate=false
         kubectl rollout status deployment/hello-nginx \
           --insecure-skip-tls-verify --timeout=120s || true
-        kubectl get svc hello-svc --insecure-skip-tls-verify
+        kubectl get svc hello-nginx --insecure-skip-tls-verify
 
 

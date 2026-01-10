@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-hello
+  name: hello-nginx
 spec:
   replicas: 1
   selector:
@@ -21,7 +21,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-hello-svc
+  name: hello-nginx
 spec:
   selector:
     app: nginx-hello
