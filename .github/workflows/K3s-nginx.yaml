@@ -30,7 +30,7 @@ jobs:
     - name: Ansible deploy k3s (shell)
       run: |
         ansible-playbook -i ./ansible/hosts.yaml \
-          ./ansible/main.yml \
+          ./ansible/main.yaml \
           --user azureuser \
           -e "ansible_ssh_pass=${{ secrets.AZURE_VM_PASSWORD }}" \
           -e "ansible_become_pass=${{ secrets.AZURE_VM_PASSWORD }}" \
