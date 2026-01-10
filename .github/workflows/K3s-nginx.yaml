@@ -42,16 +42,13 @@ jobs:
         echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > kubeconfig
         chmod 600 kubeconfig
         
-        echo "=== DEBUG KUBECONFIG ==="
-        cat kubeconfig | grep server
-        
         export KUBECONFIG=kubeconfig
-        kubectl get nodes || echo "❌ Cluster unreachable"
         
-        # Deploy safely
-        kubectl apply -f ./k3s/k3s-deploy.yaml --validate=false
-        kubectl rollout status deployment/hello-nginx --timeout=120s --validate=false || true
-        
-        kubectl get svc nginx-hello-svc
+        kubectl get nodes --insecure-skip-tls-verify || exit 1
+        kubectl apply -f ./k3s/k3s-deploy.yaml \
+          --insecure-skip-tls-verify --validate=false
+        kubectl rollout status deployment/hello-nginx \
+          --insecure-skip-tls-verify --timeout=120s || true
+        kubectl get svc hello-svc --insecure-skip-tls-verify
 
 
