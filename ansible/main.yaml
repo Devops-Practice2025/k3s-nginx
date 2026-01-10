@@ -4,13 +4,13 @@
   become: yes
 
   tasks:
-    # Docker install
-    - name: Install Docker
-      ansible.builtin.shell: |
-        dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-        systemctl enable docker --now
-        newgrp docker
-        usermod -aG docker azureuser
+    # # Docker install
+    # - name: Install Docker
+    #   ansible.builtin.shell: |
+    #     dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    #     systemctl enable docker --now
+    #     newgrp docker
+    #     usermod -aG docker azureuser
     
     # Install K3s
     - name: Install k3s
