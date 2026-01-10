@@ -1,14 +1,25 @@
 name: K3s-nginx Deployment
-trigger: 
-  branches:
-    - main
+on: 
+  workflow_dispatch
+
 env:
-  name: dev
+  AZURE_VM_IP: ${{ secrets.AZURE_VM_IP }}
   
 jobs:
-
-  deployment:
+  build-and-deploy:
     runs_on: ubuntu-latest
+
     steps:
-      - name: Code Chekout
-        uses: actions/checkout@v4
+    # Checkout code
+    - uses: actions/checkout@v4
+
+    # Build & test Docker image
+    - name: Build Docker image
+      run: |
+        docker build -t k3s-nginx:latest ./docker
+
+    - name: Test image locally
+      run: |
+        docker run --rm -p 8080:80 k3s-nginx:latest
+        curl -f http://localhost:8080 || exit 1
+        docker stop $(docker ps -q)

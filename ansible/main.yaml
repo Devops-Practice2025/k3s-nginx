@@ -43,10 +43,16 @@
               replace: 'server: http://{{ ansible_default_ipv4.address }}:6443'
 
         - file:
-              path: /home/azureuser/.kube/config
-              owner: azureuser
-              group: azureuser
-              mode: '0600'
+            path: /home/azureuser/.kube/config
+            owner: azureuser
+            group: azureuser
+            mode: '0600'
+
+        - file:
+            path: /etc/rancher/k3s/k3s.yaml
+            owner: azureuser
+            group: azureuser
+            mode: '0600'
 
   handlers:
     - name: Restart docker
