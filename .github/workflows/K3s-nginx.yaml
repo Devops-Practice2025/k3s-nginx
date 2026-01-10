@@ -39,7 +39,7 @@ jobs:
 
     - name: Deploy Nginx (debug + safe)
       run: |
-        echo "${{ secrets.K3S_KUBECONFIG_B64 }}" | base64 -d > kubeconfig
+        echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > kubeconfig
         chmod 600 kubeconfig
         
         echo "=== DEBUG KUBECONFIG ==="
