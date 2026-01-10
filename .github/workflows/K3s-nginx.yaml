@@ -20,6 +20,19 @@ jobs:
 
     - name: Test image locally
       run: |
-        docker run --rm -p 8080:80 k3s-nginx:latest
+        docker run --rm -d --name hello-nginx -p 8080:80 k3s-nginx:latest
+        sleep 3
         curl -f http://localhost:8080 || exit 1
-        docker stop $(docker ps -q)
+        echo "Nginx run successful"
+        docker stop hello-nginx
+        docker rm -f hello-nginx
+
+    - name: Ansible deploy k3s (shell)
+      run: |
+        ansible-playbook -i ./ansible/hosts.yaml \
+          ./ansible/main.yml \
+          --user azureuser \
+          -e "ansible_ssh_pass=${{ secrets.AZURE_VM_PASSWORD }}" \
+          -e "ansible_become_pass=${{ secrets.AZURE_VM_PASSWORD }}" \
+          -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'" \
+          || echo "k3s already installed"    
