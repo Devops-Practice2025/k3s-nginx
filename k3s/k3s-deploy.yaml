@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: docker.io/karthikeyan-g16/k3s-nginx:latest 
+        image: karthikeyang16/k3s-nginx:latest 
         ports:
         - containerPort: 80
 ---
