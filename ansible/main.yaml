@@ -1,54 +1,54 @@
 ---
-name: Install k3s in linux
-hosts: azurevm
-become: yes
+- name: Install k3s in linux
+  hosts: azurevm
+  become: yes
 
-tasks:
-  # Docker install
-  - name: Install Docker
-    ansible.builtin.shell: |
-      dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-      systemctl enable docker --now
-      newgrp docker
-      usermod -aG docker azureuser
-  
-  # Install K3s
-  - name: Install k3s
-    ansible.builtin.shell: |
-      curl -sfL https://get.k3s.io | sh -
-    args:
-      creates: /usr/local/bin/k3s
+  tasks:
+    # Docker install
+    - name: Install Docker
+      ansible.builtin.shell: |
+        dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+        systemctl enable docker --now
+        newgrp docker
+        usermod -aG docker azureuser
+    
+    # Install K3s
+    - name: Install k3s
+      ansible.builtin.shell: |
+        curl -sfL https://get.k3s.io | sh -
+      args:
+        creates: /usr/local/bin/k3s
 
-  - name: Enable k3s
-    systemd:
-      name: k3s
-      enabled: yes
-      state: started
-  
-  - name: Set kube config for k3s
-    block:
-      - file:
-          path: /home/azureuser/.kube
-          state: directory
-          owner: azureuser
-
-      - copy:
-          src: /etc/rancher/k3s/k3s.yaml
-          dest: /home/azureuser/.kube/config
-          remote_src: yes
-
-      - replace:
-            path: /home/azureuser/.kube/config
-            regexp: '^server: https://127\\.0\\.0\\.1:6443'
-            replace: 'server: http://{{ ansible_default_ipv4.address }}:6443'
-
-      - file:
-            path: /home/azureuser/.kube/config
+    - name: Enable k3s
+      systemd:
+        name: k3s
+        enabled: yes
+        state: started
+    
+    - name: Set kube config for k3s
+      block:
+        - file:
+            path: /home/azureuser/.kube
+            state: directory
             owner: azureuser
-            group: azureuser
-            mode: '0600'
 
-handlers:
+        - copy:
+            src: /etc/rancher/k3s/k3s.yaml
+            dest: /home/azureuser/.kube/config
+            remote_src: yes
+
+        - replace:
+              path: /home/azureuser/.kube/config
+              regexp: '^server: https://127\\.0\\.0\\.1:6443'
+              replace: 'server: http://{{ ansible_default_ipv4.address }}:6443'
+
+        - file:
+              path: /home/azureuser/.kube/config
+              owner: azureuser
+              group: azureuser
+              mode: '0600'
+
+  handlers:
     - name: Restart docker
       systemd:
         name: docker
