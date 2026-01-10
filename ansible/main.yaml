@@ -39,7 +39,7 @@
 
         - replace:
               path: /home/azureuser/.kube/config
-              regexp: '^server: https://127\\.0\\.0\\.1:6443'
+              regexp: '^server: https://127\.0\.0\.1:6443' 
               replace: 'server: http://{{ ansible_default_ipv4.address }}:6443'
 
         - file:

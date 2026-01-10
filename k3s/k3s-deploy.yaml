@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-hello
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-hello
+  template:
+    metadata:
+      labels:
+        app: nginx-hello
+    spec:
+      containers:
+      - name: nginx
+        image: docker.io/karthikeyan-g16/k3s-nginx:latest 
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-hello-svc
+spec:
+  selector:
+    app: nginx-hello
+  ports:
+  - port: 80
+    targetPort: 80
+  type: NodePort  # Or LoadBalancer on AWS
+
